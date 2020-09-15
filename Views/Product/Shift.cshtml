@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Изменение</title>
+    @model Guid
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+
+    <div class="container">
+        <div class="container__select">
+            @using (Html.BeginForm("Changed", "Product"))
+            {
+                <input type="hidden" value="@Model" name="mark" />
+                <fieldset class="fieldset">
+                    <legend class="legend">Изменение товара</legend>
+                    <label>Наименование товара<input class="intro__input intro_input--select" value="" name="Name" /></label>
+                    <label>Цена<input class="intro__input intro_input--select" type="number" name="Price" /></label>
+                    <label>Категория товара<input class="intro__input intro_input--select" value="" name="Category" /></label>
+                    <label>URL-address image<input class="intro__input intro_input--select" value="" name="image" /></label>
+                    <button class="btn btn--red" type="submit">Изменить товар на сайте</button>
+                </fieldset>
+            }
+        </div>
+    </div>
+    }
+
+</body>
+</html>

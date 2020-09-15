@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    @model EndedTask.Models.ViewModels.RegisterViewModel
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+    <div class="container">
+        <div class="container__select">
+            <form method="post" asp-controller="Account" asp-action="Register">
+                <fieldset class="fieldset">
+                    <legend class="legend">Регистрация нового пользователя</legend>
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <div>
+                        <label asp-for="Email"></label><br />
+                        <input class="intro__input intro_input--select" asp-for="Email" />
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Password"></label><br />
+                        <input class="intro__input intro_input--select" asp-for="Password" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                    <div>
+                        <label asp-for="PasswordConfirm"></label><br />
+                        <input class="intro__input intro_input--select" asp-for="PasswordConfirm" />
+                        <span asp-validation-for="PasswordConfirm"></span>
+                    </div>
+                    <div>
+                        <button class="btn btn--red" type="submit">Регистрация</button>
+                    </div>
+                </fieldset>
+            </form>
+            </div>
+        </div>
+
+</body>
+</html>

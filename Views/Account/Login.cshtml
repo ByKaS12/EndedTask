@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    @model EndedTask.Models.ViewModels.LoginViewModel
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+</head>
+<body style="background-color: #000000">
+    @await Html.PartialAsync("NavBar");
+    <div class="container">
+        <div class="container__select">
+
+
+            <h2 class="intro__title"></h2>
+            <form method="post" asp-controller="Account" asp-action="Login"
+                  asp-route-returnUrl="@Model.ReturnUrl">
+                <fieldset class="fieldset">
+                    <legend class="legend">Вход в приложение</legend>
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <div>
+                        <label asp-for="Email"></label><br />
+                        <input class="intro__input intro_input--select" asp-for="Email" />
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Password"></label><br />
+                        <input class="intro__input intro_input--select" asp-for="Password" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                    <div>
+                        <label asp-for="RememberMe"></label><br />
+                        <input class="" asp-for="RememberMe" />
+                    </div>
+                    <div>
+                        <button class="btn btn--red" type="submit">Войти</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавление</title>
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+
+    <div class="container">
+        <div class="container__select">
+            @using (Html.BeginForm("Add", "Product"))
+            {
+                <fieldset class="fieldset">
+                    <legend class="legend">Заполнение товара</legend>
+                    <label>Наименование товара<input class="intro__input intro_input--select" value="" name="Name" /></label>
+                    <label>Цена<input class="intro__input intro_input--select" type="number" name="Price" /></label>
+                    <label>Категория товара<input class="intro__input intro_input--select" value="" name="Category" /></label>
+                    <label>URL-address image<input class="intro__input intro_input--select" value="" name="image" /></label>
+                    <button class="btn btn--red" type="submit">Добавить товар на сайт</button>
+                </fieldset>
+            }
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    @model IEnumerable<EndedTask.Models.User>
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+    <div class="container">
+        <h2 class="intro__subtitle intro__subtitle--h2">Список Пользователей</h2>
+        <div style="display: flex; justify-content: center;"><a class="btn btn--red" asp-action="Create">Добавить пользователя</a></div>
+        <div style="align-items: normal" class="container__select">
+
+
+            <table class="table">
+                <tr><th>Email</th><th></th><th></th></tr>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>
+                            <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                                <a style="margin-left: 3px; padding: 5px;" class="btn btn--red" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                                <a style="margin-left: 3px; padding: 5px;" class="btn btn--red" asp-action="ChangePassword" asp-route-id="@user.Id">Сменить пароль</a>
+                                <button style="margin-left: 3px; padding: 5px;" class="btn btn--red" type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+    </div>
+            
+</body>
+</html>

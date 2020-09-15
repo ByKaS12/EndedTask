@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    @model EndedTask.Repositories.UnitOfWork
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+    @{
+        if (Model != null && User.IsInRole("admin"))
+        {
+            <h2 class="intro__subtitle intro__subtitle--h2">Личный кабинет Администратора</h2>
+            <div class="container__orders">
+                @foreach (var item in Model.Orders.GetAllList().ToList())
+                {
+                using (Html.BeginForm("ChangeOrder", "Users"))
+                {
+                <div class="container__order">
+                    <input type="hidden" value="@item.Id" name="Id" />
+                    <p>Номер заказа: №@item.OrderNumber</p>
+                    <p>Дата регистрации заказа: @item.OrderDate.ToShortDateString()</p>
+                    <label>Дата доставки: <input class="intro__input intro_input--select" value="@item.ShipmentDate.ToShortDateString()" name="ShipmentDate" /><button class="btn btn--area" type="submit" name="button" value="Change">Изменить</button></label>
+                    <label>
+                        Статус заказа: <input class="intro__input intro_input--select" disabled value="@item.Status" name="Status" />@if (item.Status == "New")
+                        {<button class="btn btn--area" type="submit" name="button" value="Confirm">Подтвердить</button>}@if (item.Status == "Performed")
+                        {<button class="btn btn--area" type="submit" name="button" value="Finish">Завершить</button>} @if (item.Status == "Completed")
+                        {<button class="btn btn--area" type="submit" name="button" value="Delete">Удалить заказ</button>}
+                    </label>
+                </div>
+                }
+                <br />
+
+                }
+                </div>
+
+                }
+                if (Model != null && User.IsInRole("Client"))
+                {
+                <h2 class="intro__subtitle intro__subtitle--h2">Личный кабинет пользователя</h2>
+
+                var h = Model.Users.Get(User.Identity.Name);
+                var g = Model.Clients.Get(Guid.Parse(h.Id));
+<div style="display: flex; height: -webkit-fill-available; justify-content: space-between;" class="container container--client">
+    @if (g != null)
+    {
+        @using (Html.BeginForm("ChangeClient", "Users"))
+        {
+            <input type="hidden" value="@g.Id" name="Id" />
+            <fieldset class="fieldset">
+                <legend class="legend">Персональные данные</legend>
+                <p>Код клиента: @g.Code</p>
+                <p>Скидка: @g.Discount %</p>
+                <label>Имя: <input class="intro__input intro_input--select" type="text" name="Name" value="@g.Name" /><button class="btn btn--area" type="submit" value="NameB" name="button">Изменить</button></label><br />
+                <label>Адрес: <input class="intro__input intro_input--select" type="text" name="Address" value="@g.Address" /><button class="btn btn--area" type="submit" value="AddressB" name="button">Изменить</button></label>
+
+
+
+            </fieldset>
+        }
+        var v = Model.Orders.Get(g);
+<div style=" margin: 54px;" class="copy">
+
+    @if (v != null && v.OrderNumber != 0)
+    {<fieldset class="fieldset">
+            <legend class="legend">Состояние заказа</legend>
+            <p>Номер заказа: @v.OrderNumber</p>
+            <p>Статус заказа: @v.Status</p>
+            <p>Дата заказа: @v.OrderDate.ToShortDateString()</p>
+            <p>Дата ориентировочной доставки заказа: @v.ShipmentDate.ToShortDateString()</p>
+            @using (Html.BeginForm("DeleteOrder", "Users"))
+            {
+                if (v.Status == "New")
+                {
+                    <button class="btn btn--area" type="submit" value="@v.Id" name="mark">Отменить заказ</button>
+                    <br />
+
+                }
+                else
+                {
+                    <p>К сожалению, вы не можете отменить заказ, так как статус вашего заказа ="@v.Status"</p>
+                    <br />
+                }
+            }
+            <br />
+        </fieldset>
+    }
+    else
+    {
+        <fieldset class="fieldset">
+            <legend class="legend">Состояние заказа</legend>
+            <p>Заказов не обнаружено, возможно вы не подтвердили заказ при добавлении товара в корзину!</p>
+            <a class="btn btn--area" asp-action="Buy" asp-controller="Product">Оформить заказ</a>
+            </fieldset>
+
+            }
+
+            @using (Html.BeginForm("Delete", "Users"))
+            {
+                <button class="btn btn--area" type="submit" value="@g.Id.ToString()" name="id">Удалить Учетную запись</button>
+            }
+
+
+    </div>
+    }
+</div>
+        }
+
+    }
+
+
+        </body>
+</html>

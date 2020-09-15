@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    @using Microsoft.AspNetCore.Identity
+    @model EndedTask.Models.ViewModels.ChangeRoleViewModel
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+    <div class="container">
+        <div class="container__select">
+            <div class="container__edit">
+                <h2 class="intro__subtitle">Изменение ролей для пользователя @Model.UserEmail</h2>
+
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" name="userId" value="@Model.UserId" />
+                    <div class="div__edit">
+                        @foreach (IdentityRole role in Model.AllRoles)
+                        {
+                            <input type="checkbox" name="roles" value="@role.Name"
+                                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+                            }
+                    </div>
+                    <button type="submit" class="btn btn--red">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

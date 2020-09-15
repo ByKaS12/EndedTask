@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @model IEnumerable<EndedTask.Models.Product>
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+    <div class=" intro intro--product">
+        <div class="container">
+            <div class="intro__inner intro__inner--product">
+                <h1 class="intro__title">Каталог товаров</h1>
+                <div class="intro__select">
+                    <div class="intro__find">
+                        @if (Model != null)
+                        {
+                            @using (Html.BeginForm("Find", "Product"))
+                            {
+                                <input name="Category" value="" class="intro__input" />
+                                <button type="submit" class="btn btn--product">Найти</button>
+                            }
+                        }
+                    </div>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <div class="intro__create">
+                            <a asp-action="Create" asp-controller="Product" class="btn btn--red">Добавить товар на сайт</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Catalog-->
+    @if (Model != null)
+    {
+        <div class="catalog">
+
+            @foreach (var item in Model)
+            {
+                <div class="product__item">
+                    <div class="img__container">
+                        <img class="product__img" src="@item.image" />
+                    </div>
+                    <div class="product__content">
+                        <div class="product__title">
+                            @item.Name
+                        </div>
+                        <div class="product__category">
+                            @item.Category
+                        </div>
+                        <div class="product__price">
+                            @item.Price руб
+                        </div>
+                        <div class="product__btn">
+                            @using (Html.BeginForm("Select", "Product"))
+                            {
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <input type="hidden" value="@item.Id" name="item"/>
+                                    <button type="submit" value="change" name="button" class="btn btn--product__item">Изменить</button>
+                                    <button type="submit" value="delete" name="button" class="btn btn--product__item">Удалить</button>
+                                }
+                                else
+                                {
+                                    <input type="hidden" value="@item.Id" name="item"/>
+                                    <button type="submit" value="buy" name="button" class="btn btn--product__item">Добавить в корзину</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        </div>
+        if (!User.IsInRole("admin")) {
+            
+        <div class="intro intro--order">
+            <a class="btn  btn--Order btn--red" href="@Url.Action("Buy","Product")">Оформить заказ</a>
+        </div>
+         }
+    }
+
+
+    </body>
+</html>

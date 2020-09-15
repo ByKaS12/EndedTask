@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    @model IEnumerable<EndedTask.Models.Client>
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+    <div class="container">
+        <h2  class="intro__subtitle intro__subtitle--h2">Список Клиентов</h2>
+        <div style="align-items: normal" class="container__select">
+
+            <table class="table">
+                <tr><th>Name</th><th>Address</th><th>Code</th><th>Discount</th></tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Address</td>
+                        <td>@item.Code</td>
+                        <td>
+                            <div style="align-items:center">
+                                @using (Html.BeginForm("ChangeClient", "Users"))
+                                {
+                                    <input type="hidden" value="@item.Id" name="Id" />
+                                    <label style="display: flex; justify-content: space-between; align-items: center;">
+                                        <input class="intro__input intro_input--select" type="number" value="@item.Discount" name="Discount" />
+                                        <button style="margin-left: 3px; padding: 5px;" class="btn btn--red" type="submit" value="DiscountB" name="button">Изменить скидку</button>
+                                    </label>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

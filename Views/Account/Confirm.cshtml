@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    @model EndedTask.Repositories.UnitOfWork
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+    <div class="container">
+        <h2 class="intro__subtitle intro__subtitle--h2">Потверждение заказа</h2>
+        <div style="align-items: normal; padding-top: 0" class="container__select">
+            @if (Model != null)
+            {
+                
+                var user = Model.Users.Get(User.Identity.Name);
+                var client = Model.Clients.Get(Guid.Parse(user.Id));
+                var order = Model.Orders.Get(client);
+                var orderItems = Model.OrderItems.GetAllList().Where(u => u.OrderId == order.Id);
+                int count = 0;
+                if (orderItems != null)
+                {
+                    foreach (var item in orderItems.ToList())
+                    {
+                        count += item.ItemPrice;
+                    }
+                }
+                if (order != null && client != null)
+                {
+                    <div class="container__div">
+                        <p class="p">Ваш Заказ №@order.OrderNumber успешно сформирован</p>
+                        <p class="p">Цена без учета скидки:@count</p>
+                        <p class="p">Скидка: @client.Discount%</p>
+                        <p class="p">Итоговая цена со скидкой: @(count - ((client.Discount * count) / 100))</p>
+                        <p class="p">Зайдите в свой личный кабинет для получения информации о статусе заказа</p>
+                        <a class="btn btn--red" asp-action="PersonalArea" asp-controller="Users">Личный кабинет</a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="container__div">
+                    <p class="p">Произошла ошибка при оформлении заказа, попробуйте повторить оформление ещё раз!</p>
+                    <a class="btn btn--red" asp-action="Buy" asp-controller="Product"></a>
+                </div>
+            }
+
+        </div>
+    </div>
+</body>
+</html>

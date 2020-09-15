@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    @model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+</head>
+<body>
+    @await Html.PartialAsync("NavBar");
+ 
+    <div class="container">
+        <h2 class="intro__subtitle intro__subtitle--h2">Список ролей</h2>
+        <div style=" display: flex; justify-content: center; align-items: center;">
+            <div class="intro__find">
+                <a class="btn btn--red" asp-action="Create">Добавить роль</a>
+                <a class="btn btn--red" asp-action="UserList">Список пользователей</a>
+            </div>
+        </div>
+        <div style="align-items: normal" class="container__select">
+            <table class="table">
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>
+                            <form asp-action="Delete" asp-route-id="@role.Id" method="post">
+                                <button class="btn btn--red" type="submit">
+                                    Удалить
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+
+
+</body>
+</html>

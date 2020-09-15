@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <header class="header">
+            <div class="container">
+                <div class="header__inner">
+                    <div class="header__logo">
+                        <a href="@Url.Action("Index","Home")"><img class="icon" src="~/CSS/img/home-run.png" alt="Alternate Text" /></a>
+                    </div>
+                    <nav class="nav">
+                        @if (User.IsInRole("admin"))
+                        {
+                            <a class="nav__link" asp-action="Index" asp-controller="Users">Пользователи</a>
+                            <a class="nav__link" asp-action="Clients" asp-controller="Users">Заказчики</a>
+                            <a class="nav__link" asp-action="Index" asp-controller="Roles">Роли</a>
+                        }
+                        <a class="nav__link" href="@Url.Action("ProductList", "Product")">Каталог товаров</a>
+                        @if (!User.IsInRole("admin"))
+                        {<a class="nav__link" href="@Url.Action("Buy", "Product")">Корзина</a>}
+                        <a class="nav__link" href="@Url.Action("PersonalArea", "Users")">Личный кабинет: @User.Identity.Name</a>
+                        @using (Html.BeginForm("Logout", "Account"))
+                        {<button type="submit" class="nav__link__btn">Выход</button>}
+                    </nav>
+                </div>
+            </div>
+        </header>
+    }
+    else
+    {
+        <header class="header">
+            <div class="container">
+                <div class="header__inner">
+                    <div class="header__logo">
+                        <a href="@Url.Action("Index","Home")">
+                            <img src="~/OtherFiles/img/home-run.png" alt="">
+                        </a>
+                    </div>
+                    <nav class="nav">
+                        <a class="nav__link" href="@Url.Action("Login","Account")">Вход</a>
+                        <a class="nav__link" href="@Url.Action("Register","Account")">Регистрация</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+    }
+</body>
+</html>
